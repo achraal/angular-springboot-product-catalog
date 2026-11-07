@@ -1,0 +1,68 @@
+<div class="container mt-3">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Liste des Produits</h3>
+    </div>
+    <div class="card-body">
+      <!-- Barre de recherche -->
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Rechercher un produit par nom..."
+            [(ngModel)]="keyword"
+          />
+        </div>
+      </div>
+
+      @if (products) {
+        @if (filteredProducts.length > 0) {
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Prix</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (p of filteredProducts; track p.id) {
+                <tr>
+                  <td>{{ p.id }}</td>
+                  <td>{{ p.name }}</td>
+                  <td>{{ p.price | currency: 'EUR' }}</td>
+                  <td>
+                    <button (click)="handleToggleSelect(p)" class="btn btn-link p-0 text-decoration-none">
+                      @if (p.selected) {
+                        <span class="badge bg-success-subtle text-success border border-success">
+                          <i class="bi bi-check-circle-fill"></i> Sélectionné
+                        </span>
+                      } @else {
+                        <span class="badge bg-secondary-subtle text-secondary border">
+                          <i class="bi bi-circle"></i> Non sélectionné
+                        </span>
+                      }
+                    </button>
+                  </td>
+                  <td>
+                    <button (click)="handleDelete(p)" class="btn btn-outline-danger btn-sm">
+                      <i class="bi bi-trash"></i> Supprimer
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="alert alert-warning">Aucun produit trouvé dans la base de données.</div>
+        }
+      } @else {
+        <div class="alert alert-info">Chargement du catalogue en cours...</div>
+      }
+    </div>
+  </div>
+</div>
